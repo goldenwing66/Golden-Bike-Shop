@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Wing Bike - Toko Sepeda Online</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <h1 class="logo">🏍 GOLD WING BIKE</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" onclick="showPage('home')">Home</a></li>
+                <li><a href="#catalog" onclick="showPage('catalog')">Katalog</a></li>
+                <li><a href="#chat" onclick="showPage('chat')">Chat</a></li>
+                <li><a href="#dashboard" onclick="showPage('dashboard')">Dashboard</a></li>
+                <li><a href="#contact" onclick="showPage('contact')">Kontak</a></li>
+            </ul>
+            <div class="cart-icon">
+                🛒 <span id="cartCount">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h2 class="hero-title">GOLD WING BIKE</h2>
+                <p class="hero-subtitle">Toko Sepeda dan Suku Cadang Terpercaya</p>
+                <p class="hero-desc">Menyediakan sepeda berkualitas dan suku cadang original dengan harga terjangkau</p>
+                <button class="btn-primary" onclick="showPage('catalog')">Lihat Katalog</button>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <div class="info-card">
+                <h3>📍 Lokasi Toko</h3>
+                <p>Jl. Mojopahit No. 543<br>Mojokerto</p>
+            </div>
+            <div class="info-card">
+                <h3>🚚 Pengiriman</h3>
+                <p>Pos Indonesia & JnE<br>Gratis untuk pembelian >Rp500rb</p>
+            </div>
+            <div class="info-card">
+                <h3>✅ Kualitas</h3>
+                <p>Produk Original<br>Garansi Resmi</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATALOG PAGE -->
+    <div id="catalog" class="page">
+        <div class="catalog-header">
+            <h2>Katalog Produk</h2>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="searchProducts()">
+            </div>
+        </div>
+
+        <div id="productList" class="product-grid">
+            <!-- Produk akan ditampilkan di sini -->
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <div class="modal-images">
+                    <img id="mainImage" src="" alt="Produk" class="main-image">
+                    <div id="thumbnailContainer" class="thumbnail-container"></div>
+                </div>
+                <div class="modal-info">
+                    <h2 id="modalProductName"></h2>
+                    <p id="modalProductDesc"></p>
+                    <div class="modal-price">
+                        <span class="price" id="modalProductPrice"></span>
+                        <span class="stock" id="modalProductStock"></span>
+                    </div>
+                    <div class="modal-details">
+                        <p><strong>Berat:</strong> <span id="modalProductWeight"></span> kg</p>
+                        <p><strong>Kategori:</strong> <span id="modalProductCategory"></span></p>
+                    </div>
+                    <div class="quantity-selector">
+                        <label>Jumlah:</label>
+                        <input type="number" id="quantityInput" value="1" min="1">
+                    </div>
+                    <button class="btn-primary" onclick="addToCart()">Tambah ke Keranjang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAT PAGE -->
+    <div id="chat" class="page">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>💬 Chat dengan Penjual</h2>
+            </div>
+            <div id="chatMessages" class="chat-messages">
+                <div class="chat-message seller">
+                    <p>Halo! Selamat datang di Gold Wing Bike. Ada yang bisa kami bantu?</p>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Ketik pesan Anda..." onkeypress="handleChatKeypress(event)">
+                <button onclick="sendChat()">Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div id="dashboard" class="page">
+        <div class="dashboard-container">
+            <h2>📊 Dashboard Admin</h2>
+            
+            <!-- Add Product Form -->
+            <div class="dashboard-section">
+                <h3>Tambah Produk Baru</h3>
+                <form id="addProductForm" class="form-group">
+                    <div class="form-row">
+                        <input type="text" id="productName" placeholder="Nama Produk" required>
+                        <input type="number" id="productPrice" placeholder="Harga" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="number" id="productWeight" placeholder="Berat (kg)" step="0.1" required>
+                        <select id="productCategory" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="Sepeda">Sepeda</option>
+                            <option value="Spare Part">Spare Part</option>
+                            <option value="Aksesori">Aksesori</option>
+                        </select>
+                    </div>
+                    <textarea id="productDesc" placeholder="Deskripsi Produk" rows="3"></textarea>
+                    <input type="number" id="productStock" placeholder="Stok" required>
+                    
+                    <!-- Image Upload -->
+                    <div class="image-upload-section">
+                        <label>Upload Foto (Max 10):</label>
+                        <input type="file" id="productImages" multiple accept="image/*" onchange="handleImageUpload()">
+                        <div id="imagePreviewContainer" class="image-preview-container"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Tambah Produk</button>
+                </form>
+            </div>
+
+            <!-- Edit/Delete Products -->
+            <div class="dashboard-section">
+                <h3>Kelola Produk</h3>
+                <div id="productManagementList" class="product-management-list">
+                    <!-- Produk akan ditampilkan di sini -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PRODUCT MODAL -->
+    <div id="editProductModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <div class="modal-body">
+                <h3>Edit Produk</h3>
+                <form id="editProductForm" class="form-group">
+                    <input type="hidden" id="editProductId">
+                    <input type="text" id="editProductName" placeholder="Nama Produk" required>
+                    <input type="number" id="editProductPrice" placeholder="Harga" required>
+                    <input type="number" id="editProductWeight" placeholder="Berat (kg)" step="0.1" required>
+                    <textarea id="editProductDesc" placeholder="Deskripsi" rows="3"></textarea>
+                    <input type="number" id="editProductStock" placeholder="Stok" required>
+                    
+                    <!-- Edit Images -->
+                    <div class="image-upload-section">
+                        <label>Update Foto (Max 10):</label>
+                        <input type="file" id="editProductImages" multiple accept="image/*" onchange="handleEditImageUpload()">
+                        <div id="editImagePreviewContainer" class="image-preview-container"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="contact" class="page">
+        <div class="contact-container">
+            <h2>Hubungi Kami</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>📍 Lokasi</h3>
+                    <p>Jl. Mojopahit No. 543<br>Mojokerto</p>
+                </div>
+                <div class="contact-card">
+                    <h3>📱 WhatsApp</h3>
+                    <p id="whatsappContact">Hubungi kami via WhatsApp</p>
+                </div>
+                <div class="contact-card">
+                    <h3>🏦 Transfer Bank</h3>
+                    <p id="bankContact">Informasi rekening akan ditampilkan setelah checkout</p>
+                </div>
+                <div class="contact-card">
+                    <h3>💬 Chat Langsung</h3>
+                    <p><a href="#chat" onclick="showPage('chat')" style="color: #ff9800; text-decoration: none;">Buka Chat</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT PAGE -->
+    <div id="checkout" class="page">
+        <div class="checkout-container">
+            <h2>🛒 Keranjang Belanja</h2>
+            
+            <div class="checkout-content">
+                <div class="cart-items-section">
+                    <h3>Item Keranjang</h3>
+                    <div id="cartItemsList" class="cart-items-list"></div>
+                </div>
+
+                <div class="checkout-summary">
+                    <h3>Ringkasan Pesanan</h3>
+                    
+                    <!-- Shipping Options -->
+                    <div class="shipping-section">
+                        <h4>Pilih Jasa Kirim:</h4>
+                        <label class="radio-option">
+                            <input type="radio" name="courier" value="pos-indonesia" onchange="calculateShipping()">
+                            <span>📮 Pos Indonesia</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="courier" value="jne" onchange="calculateShipping()">
+                            <span>🚚 JnE</span>
+                        </label>
+                    </div>
+
+                    <!-- Shipping Estimate -->
+                    <div class="shipping-estimate" id="shippingEstimate" style="display: none;">
+                        <h4>Estimasi Pengiriman:</h4>
+                        <p id="shippingInfo"></p>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="summary-details">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">Rp 0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Ongkir:</span>
+                            <span id="shippingCost">Rp 0</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="totalPrice">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Info -->
+                    <div class="payment-section">
+                        <h4>💳 Informasi Pembayaran</h4>
+                        <div class="bank-info">
+                            <p><strong>Metode:</strong> Transfer Bank</p>
+                            <p id="bankInfo">Rekening bank akan ditampilkan di sini</p>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="checkout()">Lanjut ke Pembayaran</button>
+                    <button class="btn-secondary" onclick="showPage('catalog')">Lanjut Belanja</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
